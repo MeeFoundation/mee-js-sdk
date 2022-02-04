@@ -1,0 +1,28 @@
+{
+  "name": "mee-js-sdk",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "yarn build && vite preview --port 3000",
+    "lint": "eslint './{configs,src}/**/*.{js,jsx,ts,tsx}' --config ./.eslintrc.js --format stylish",
+    "lint:fix": "yarn lint --fix"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "add": "^2.0.6",
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2",
+    "vite-plugin-dts": "^0.9.9"
+  }
+}
