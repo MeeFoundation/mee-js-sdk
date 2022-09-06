@@ -9,13 +9,11 @@ pipeline {
     stages {
         stage('BuildUI') {
             steps {
-                dir('web') {
-                    echo 'Installing dependencies...'
-                    sh 'yarn install --frozen-lockfile'
-                    echo 'Building ...'
-                    sh 'yarn build'
-                }
-           }
+                echo 'Installing dependencies...'
+                sh 'yarn install --frozen-lockfile'
+                echo 'Building ...'
+                sh 'yarn build'
+            }
         }
 
         stage('BuildDockerImage') {
@@ -40,5 +38,4 @@ pipeline {
             }
         }
     }
-
 }
