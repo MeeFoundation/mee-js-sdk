@@ -2,7 +2,7 @@ pipeline {
     agent any
     options { disableConcurrentBuilds() }
     environment {
-        TAG = 'dev'
+        TAG = 'v01-dev'
         NAME = 'sdk-getmee-org'
     }
 
