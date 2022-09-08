@@ -16,7 +16,7 @@ export default defineConfig({
   build: {
     lib: {
         entry: path.resolve(__dirname, "src/mee-sdk.ts"),
-        name: "Mee Web SDK",
+        name: "MeeWebSDK",
         formats: ["umd", "es"],
         fileName: (formats) => formats.includes("es") ? "mee-sdk-es.js": "mee-sdk.js",
     },
