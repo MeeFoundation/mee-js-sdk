@@ -1,7 +1,7 @@
 import meeLogo from '../assets/meeLogo.svg';
 
 export const goToMee = async (partnerId?: string) => {
-  window.location.href = partnerId ? `https://getmee.org/#/consent/${partnerId}` : 'https://getmee.org';
+  window.location.href = partnerId ? `https://getmee.org/#/consent/${partnerId}` : 'https://getmee.org/#/app';
 };
 
 const textColor = '#111827';
