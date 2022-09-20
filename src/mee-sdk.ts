@@ -5,7 +5,7 @@ export const buttonAction = (partnerId: string) => {
 };
 
 export const initButton = (config: {
-  partnerId: string,
+  partnerId?: string,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {

@@ -1,13 +1,13 @@
 import meeLogo from '../assets/meeLogo.svg';
 
-export const goToMee = async (partnerId: string) => {
-  window.location.href = `https://getmee.org/#/consent/${partnerId}`;
+export const goToMee = async (partnerId?: string) => {
+  window.location.href = partnerId ? `https://getmee.org/#/consent/${partnerId}` : 'https://getmee.org';
 };
 
 const textColor = '#111827';
 
 export const createButton = (config: {
-  partnerId: string,
+  partnerId?: string,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
