@@ -1,16 +1,27 @@
 import { createButton, goToMee } from './internal';
 
-export const buttonAction = (partnerId: string) => {
-  goToMee(partnerId);
+export const buttonAction = (
+  partnerId: string,
+  partnerName: string,
+  partnerUrl: string,
+  partnerImageUrl: string,
+) => {
+  goToMee(partnerId, partnerName, partnerUrl, partnerImageUrl);
 };
 
 export const initButton = (config: {
-  partnerId?: string,
+  partnerId: string,
+  partnerName: string,
+  partnerUrl: string,
+  partnerImageUrl: string,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
   createButton({
     partnerId: config.partnerId,
+    partnerName: config.partnerName,
+    partnerUrl: config.partnerUrl,
+    partnerImageUrl: config.partnerImageUrl,
     containerId: config.containerId,
     classNames: config.classNames,
   });

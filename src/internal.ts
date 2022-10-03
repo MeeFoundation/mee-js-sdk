@@ -1,13 +1,24 @@
 import meeLogo from '../assets/meeLogo.svg';
 
-export const goToMee = async (partnerId?: string) => {
-  window.open(partnerId ? `https://getmee.org/#/consent/${partnerId}` : 'https://getmee.org/#/app', '_blank');
+export const goToMee = async (
+  partnerId: string,
+  partnerName: string,
+  partnerUrl: string,
+  partnerImageUrl: string,
+) => {
+  const encodedData = Buffer.from(JSON.stringify({
+    partnerId, partnerName, partnerUrl, partnerImageUrl,
+  })).toString('base64');
+  window.open(partnerId ? `https://getmee.org/#/consent/${encodedData}` : 'https://getmee.org/#/app', '_blank');
 };
 
 const textColor = '#111827';
 
 export const createButton = (config: {
-  partnerId?: string,
+  partnerId: string,
+  partnerName: string,
+  partnerUrl: string,
+  partnerImageUrl: string,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
@@ -48,7 +59,12 @@ export const createButton = (config: {
     button.style.boxShadow = '';
     return undefined;
   });
-  button.addEventListener('click', () => goToMee(config.partnerId));
+  button.addEventListener('click', () => goToMee(
+    config.partnerId,
+    config.partnerName,
+    config.partnerUrl,
+    config.partnerImageUrl,
+  ));
 
   button.appendChild(logo);
   button.appendChild(text);
