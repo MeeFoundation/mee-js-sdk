@@ -6,7 +6,7 @@ export const goToMee = async (
   partnerUrl: string,
   partnerImageUrl: string,
 ) => {
-  const encodedData = atob(JSON.stringify({
+  const encodedData = btoa(JSON.stringify({
     partnerId, partnerName, partnerUrl, partnerImageUrl,
   }));
   window.open(partnerId ? `https://getmee.org/#/consent/${encodedData}` : 'https://getmee.org/#/app', '_blank');
