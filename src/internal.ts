@@ -6,9 +6,9 @@ export const goToMee = async (
   partnerUrl: string,
   partnerImageUrl: string,
 ) => {
-  const encodedData = Buffer.from(JSON.stringify({
+  const encodedData = atob(JSON.stringify({
     partnerId, partnerName, partnerUrl, partnerImageUrl,
-  })).toString('base64');
+  }));
   window.open(partnerId ? `https://getmee.org/#/consent/${encodedData}` : 'https://getmee.org/#/app', '_blank');
 };
 
