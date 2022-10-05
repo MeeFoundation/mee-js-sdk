@@ -5,8 +5,9 @@ export const buttonAction = (
   partnerName: string,
   partnerUrl: string,
   partnerImageUrl: string,
+  partnerDisplayedUrl: string,
 ) => {
-  goToMee(partnerId, partnerName, partnerUrl, partnerImageUrl);
+  goToMee(partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl);
 };
 
 export const initButton = (config: {
@@ -14,6 +15,7 @@ export const initButton = (config: {
   partnerName: string,
   partnerUrl: string,
   partnerImageUrl: string,
+  partnerDisplayedUrl: string,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
@@ -22,6 +24,7 @@ export const initButton = (config: {
     partnerName: config.partnerName,
     partnerUrl: config.partnerUrl,
     partnerImageUrl: config.partnerImageUrl,
+    partnerDisplayedUrl: config.partnerDisplayedUrl,
     containerId: config.containerId,
     classNames: config.classNames,
   });

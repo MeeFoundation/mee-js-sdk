@@ -5,9 +5,10 @@ export const goToMee = async (
   partnerName: string,
   partnerUrl: string,
   partnerImageUrl: string,
+  partnerDisplayedUrl: string,
 ) => {
   const encodedData = btoa(JSON.stringify({
-    partnerId, partnerName, partnerUrl, partnerImageUrl,
+    partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl,
   }));
   window.open(partnerId ? `https://getmee.org/#/consent/${encodedData}` : 'https://getmee.org/#/app', '_blank');
 };
@@ -19,6 +20,7 @@ export const createButton = (config: {
   partnerName: string,
   partnerUrl: string,
   partnerImageUrl: string,
+  partnerDisplayedUrl: string,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
@@ -64,6 +66,7 @@ export const createButton = (config: {
     config.partnerName,
     config.partnerUrl,
     config.partnerImageUrl,
+    config.partnerDisplayedUrl,
   ));
 
   button.appendChild(logo);
