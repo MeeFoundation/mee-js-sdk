@@ -3,7 +3,7 @@ pipeline {
     options { disableConcurrentBuilds() }
     environment {
         TAG = 'v01-dev'
-        NAME = 'sdk-getmee-org'
+        NAME = 'js-sdk'
     }
 
     stages {
