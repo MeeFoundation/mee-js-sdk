@@ -10,7 +10,7 @@ export const goToMee = async (
   const encodedData = btoa(JSON.stringify({
     partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl,
   }));
-  window.open(partnerId ? `https://getmee.org/#/consent/${encodedData}` : 'https://getmee.org/#/app', '_blank');
+  window.open(partnerId ? `https://meeproject.org/#/consent/${encodedData}` : 'https://meeproject.org/#/app', '_blank');
 };
 
 const textColor = '#111827';
