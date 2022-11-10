@@ -6,9 +6,10 @@ export const goToMee = async (
   partnerUrl: string,
   partnerImageUrl: string,
   partnerDisplayedUrl: string,
+  isMobileApp: boolean,
 ) => {
   const encodedData = btoa(JSON.stringify({
-    partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl,
+    partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl, isMobileApp,
   }));
   window.open(partnerId ? `https://meeproject.org/#/consent/${encodedData}` : 'https://meeproject.org/#/app', '_blank');
 };
@@ -21,6 +22,7 @@ export const createButton = (config: {
   partnerUrl: string,
   partnerImageUrl: string,
   partnerDisplayedUrl: string,
+  isMobileApp: boolean,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
@@ -67,6 +69,7 @@ export const createButton = (config: {
     config.partnerUrl,
     config.partnerImageUrl,
     config.partnerDisplayedUrl,
+    config.isMobileApp,
   ));
 
   button.appendChild(logo);

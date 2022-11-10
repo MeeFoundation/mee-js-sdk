@@ -6,8 +6,9 @@ export const buttonAction = (
   partnerUrl: string,
   partnerImageUrl: string,
   partnerDisplayedUrl: string,
+  isMobileApp: boolean,
 ) => {
-  goToMee(partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl);
+  goToMee(partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl, isMobileApp);
 };
 
 export const initButton = (config: {
@@ -16,6 +17,7 @@ export const initButton = (config: {
   partnerUrl: string,
   partnerImageUrl: string,
   partnerDisplayedUrl: string,
+  isMobileApp: boolean,
   containerId: string,
   classNames?: { text?: string, logo?: string, button?: string }
 }) => {
@@ -25,6 +27,7 @@ export const initButton = (config: {
     partnerUrl: config.partnerUrl,
     partnerImageUrl: config.partnerImageUrl,
     partnerDisplayedUrl: config.partnerDisplayedUrl,
+    isMobileApp: config.isMobileApp,
     containerId: config.containerId,
     classNames: config.classNames,
   });
