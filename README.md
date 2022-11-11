@@ -1,4 +1,4 @@
-# MEE JS SDK
+# Mee JS SDK
 
 ### Install dependencies:
 ```yarn install```
