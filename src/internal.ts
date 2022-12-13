@@ -1,32 +1,19 @@
 import meeLogo from '../assets/meeLogo.svg';
+import { MeeAuthorizeConfiguration, MeeInitConfiguration } from './types';
 
-export const goToMee = async (
-  partnerId: string,
-  partnerName: string,
-  partnerUrl: string,
-  partnerImageUrl: string,
-  partnerDisplayedUrl: string,
-  isMobileApp: boolean,
-) => {
-  const encodedData = btoa(JSON.stringify({
-    partnerId, partnerName, partnerUrl, partnerImageUrl, partnerDisplayedUrl, isMobileApp,
-  }));
-  window.open(partnerId ? `https://mee.foundation/#/consent/${encodedData}` : 'https://mee.foundation/#/app', '_blank');
+const MEE_URL = 'https://www-dev.mee.foundation/#/';
+const CONSENT = 'consent';
+
+export const goToMee = async (config: MeeAuthorizeConfiguration) => {
+  const encodedData = btoa(JSON.stringify(config));
+  window.open(config.client_id || config.client?.id ? `${MEE_URL}${CONSENT}/${encodedData}` : `${MEE_URL}app`, '_blank');
 };
 
 const textColor = '#111827';
 
-export const createButton = (config: {
-  partnerId: string,
-  partnerName: string,
-  partnerUrl: string,
-  partnerImageUrl: string,
-  partnerDisplayedUrl: string,
-  isMobileApp: boolean,
-  containerId: string,
-  classNames?: { text?: string, logo?: string, button?: string }
-}) => {
-  const container = document.getElementById(config.containerId);
+export const createButton = (config: MeeInitConfiguration): string | null => {
+  if (typeof config.container_id === 'undefined') return 'please specify container_id';
+  const container = document.getElementById(config.container_id);
   const button = document.createElement('button');
   const logo = document.createElement('img');
   logo.src = meeLogo;
@@ -63,16 +50,10 @@ export const createButton = (config: {
     button.style.boxShadow = '';
     return undefined;
   });
-  button.addEventListener('click', () => goToMee(
-    config.partnerId,
-    config.partnerName,
-    config.partnerUrl,
-    config.partnerImageUrl,
-    config.partnerDisplayedUrl,
-    config.isMobileApp,
-  ));
+  button.addEventListener('click', () => goToMee(config));
 
   button.appendChild(logo);
   button.appendChild(text);
   container?.appendChild(button);
+  return null;
 };
