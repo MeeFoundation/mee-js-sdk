@@ -19,7 +19,6 @@ export type MeeClaim = {
 
 export type MeeResponse = {
   [name: string]: {
-    essential: boolean,
     field_type: MeeFieldType,
     value: string
   }
@@ -34,15 +33,14 @@ export type MeeClient = {
   displayUrl: string,
 };
 
-export interface MeeAuthorizeConfiguration {
+export type MeeButtonClassnames = { text?: string, logo?: string, button?: string };
+
+export interface MeeConfiguration {
   client_id?: string;
   client?: MeeClient;
   env: MeeEnvType;
   scope: string;
   claim?: MeeClaim;
-}
-
-export interface MeeInitConfiguration extends MeeAuthorizeConfiguration {
   container_id?: string
-  classNames?: { text?: string, logo?: string, button?: string }
+  class_names?: MeeButtonClassnames
 }
