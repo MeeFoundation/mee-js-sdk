@@ -38,6 +38,7 @@ export type MeeClient = {
   rejectUrl: string,
   logoUrl: string,
   displayUrl: string,
+  type: 'web' | 'mobile'
 };
 
 export type MeeButtonClassnames = { text?: string, logo?: string, button?: string };
