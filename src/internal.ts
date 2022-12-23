@@ -7,6 +7,11 @@ const CONSENT = 'consent';
 // eslint-disable-next-line import/no-mutable-exports
 export let meeInitData: MeeConfiguration | null = null;
 
+export const encodeString = (data: unknown): string => btoa(JSON.stringify(data));
+export function decodeString<T>(data: string):T {
+  return JSON.parse(atob(data));
+}
+
 export const getQueryParameters = (parameterName: string): string | undefined => {
   const query = window.location.search.substring(1);
   const items = query.split('&');
@@ -16,7 +21,7 @@ export const getQueryParameters = (parameterName: string): string | undefined =>
 
 export const goToMee = async () => {
   if (meeInitData !== null) {
-    const encodedData = btoa(JSON.stringify(meeInitData));
+    const encodedData = encodeString(meeInitData);
     window.open(meeInitData.client_id || meeInitData.client?.id
       ? `${MEE_URL}${CONSENT}/${encodedData}`
       : `${MEE_URL}app`, '_blank');

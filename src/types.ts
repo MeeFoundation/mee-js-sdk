@@ -10,6 +10,12 @@ export enum MeeFieldType {
   EMAIL = 'email',
 }
 
+export enum MeeConsentDuration {
+  TEMPORARY = 'temporary',
+  APP_LIFETIME = 'appLifetime',
+  MANUAL_REMOVE = 'manualRemove',
+}
+
 export type MeeClaim = {
   [name: string]: {
     essential: boolean,
@@ -21,6 +27,7 @@ export type MeeResponse = {
   [name: string]: {
     field_type: MeeFieldType,
     value: string
+    duration: MeeConsentDuration
   }
 };
 
