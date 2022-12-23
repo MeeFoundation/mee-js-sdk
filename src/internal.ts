@@ -22,7 +22,7 @@ export const getQueryParameters = (parameterName: string): string | undefined =>
 export const goToMee = async () => {
   if (meeInitData !== null) {
     const encodedData = encodeString(meeInitData);
-    window.open(meeInitData.client_id || meeInitData.client?.id
+    window.open(meeInitData.client_id || meeInitData.client?.client_id
       ? `${MEE_URL}${CONSENT}/${encodedData}`
       : `${MEE_URL}app`, '_blank');
   }

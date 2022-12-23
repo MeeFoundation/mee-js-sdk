@@ -32,7 +32,7 @@ export type MeeResponse = {
 };
 
 export type MeeClient = {
-  id: string,
+  client_id: string,
   name: string,
   acceptUrl: string,
   rejectUrl: string,
