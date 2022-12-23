@@ -1,7 +1,7 @@
 import meeLogo from '../assets/meeLogo.svg';
 import { MeeButtonClassnames, MeeConfiguration } from './types';
 
-const MEE_URL = 'https://www-dev.mee.foundation/#/';
+const MEE_URL = 'https://auth-dev.mee.foundation/#/';
 const CONSENT = 'consent';
 
 // eslint-disable-next-line import/no-mutable-exports
