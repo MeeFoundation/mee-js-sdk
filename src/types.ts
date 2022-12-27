@@ -41,8 +41,6 @@ export type MeeClient = {
   type: 'web' | 'mobile'
 };
 
-export type MeeButtonClassnames = { text?: string, logo?: string, button?: string };
-
 export interface MeeConfiguration {
   client_id?: string;
   client?: MeeClient;
@@ -50,5 +48,4 @@ export interface MeeConfiguration {
   scope: string;
   claim?: MeeClaim;
   container_id?: string
-  class_names?: MeeButtonClassnames
 }

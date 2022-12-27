@@ -10,7 +10,7 @@ export const authorize = () => {
 export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => void) => {
   initInternal(config);
   const token = getQueryParameters('token');
-  if (typeof token !== 'undefined') callback(decodeString(token));
+  if (typeof token !== 'undefined') callback(decodeString(token) as MeeResponse);
 };
 
 export const check = (token: string): boolean => token.length > 0;

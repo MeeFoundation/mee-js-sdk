@@ -1,5 +1,5 @@
 import meeLogo from '../assets/meeLogo.svg';
-import { MeeButtonClassnames, MeeConfiguration } from './types';
+import { MeeConfiguration } from './types';
 
 const MEE_URL = 'https://auth-dev.mee.foundation/#/';
 const CONSENT = 'consent';
@@ -30,7 +30,7 @@ export const goToMee = async () => {
 
 const textColor = '#111827';
 
-export const createButton = (containerId: string, classNames?: MeeButtonClassnames) => {
+export const createButton = (containerId: string) => {
   const container = document.getElementById(containerId);
   const button = document.createElement('button');
   const logo = document.createElement('img');
@@ -39,9 +39,9 @@ export const createButton = (containerId: string, classNames?: MeeButtonClassnam
   logo.style.width = '18px';
   logo.style.height = '18px';
   const text = document.createElement('p');
-  logo.className = classNames?.logo || 'meeLogo';
-  text.className = classNames?.text || 'meeText';
-  button.className = classNames?.button || 'meeButton';
+  logo.className = 'meeLogo';
+  text.className = 'meeText';
+  button.className = 'meeButton';
   text.innerHTML = 'Connect with Mee';
   text.style.fontWeight = '700';
   text.style.margin = '0px';
@@ -77,7 +77,7 @@ export const createButton = (containerId: string, classNames?: MeeButtonClassnam
 
 export const initInternal = (config: MeeConfiguration) => {
   if (typeof config.container_id !== 'undefined') {
-    createButton(config.container_id, config.class_names);
+    createButton(config.container_id);
   }
   meeInitData = config;
 };
