@@ -1,11 +1,12 @@
 import meeLogo from '../assets/meeLogo.svg';
+import { MeeConfigurationInternal, MeeEnvType } from './internalTypes';
 import { MeeConfiguration } from './types';
 
 const MEE_URL = 'https://auth-dev.mee.foundation/#/';
 const CONSENT = 'consent';
 
 // eslint-disable-next-line import/no-mutable-exports
-export let meeInitData: MeeConfiguration | null = null;
+export let meeInitData: MeeConfigurationInternal | null = null;
 
 export const encodeString = (data: unknown): string => btoa(JSON.stringify(data));
 export function decodeString<T>(data: string):T {
@@ -22,7 +23,7 @@ export const getQueryParameters = (parameterName: string): string | undefined =>
 export const goToMee = async () => {
   if (meeInitData !== null) {
     const encodedData = encodeString(meeInitData);
-    window.open(meeInitData.client_id || meeInitData.client?.client_id
+    window.open(meeInitData.client_id || meeInitData.client_metadata?.client_id
       ? `${MEE_URL}${CONSENT}/${encodedData}`
       : `${MEE_URL}app`, '_blank');
   }
@@ -79,5 +80,14 @@ export const initInternal = (config: MeeConfiguration) => {
   if (typeof config.container_id !== 'undefined') {
     createButton(config.container_id);
   }
-  meeInitData = config;
+  const { container_id: containerId, ...omitContainerId } = config;
+  meeInitData = {
+    ...omitContainerId,
+    client_metadata: typeof config.client_metadata !== 'undefined'
+      ? { ...config.client_metadata, type: 'web' }
+      : undefined,
+    scope: 'openid',
+    env: MeeEnvType.DEV,
+    response_type: 'id_token token',
+  };
 };
