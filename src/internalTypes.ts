@@ -1,3 +1,4 @@
+import { JWK } from 'jose';
 import { MeeClient, MeeConfiguration } from './types';
 
 export enum MeeEnvType {
@@ -7,18 +8,38 @@ export enum MeeEnvType {
 }
 
 export interface MeeClientInternal extends MeeClient {
-  type: 'web' | 'mobile'
+  application_type: 'web' | 'mobile'
 }
 
 export interface MeeConfigurationInternal extends Omit<MeeConfiguration, 'container_id'> {
-  env: MeeEnvType;
+  // env: MeeEnvType;
   scope: 'openid';
-  response_type: 'id_token' | 'id_token token';
+  response_type: 'code' | 'id_token' | 'code id_token';
   client_metadata?: MeeClientInternal;
   client_id?: string;
-  id_token_hint?: string;
-  client_metadata_uri?: string;
-  request?: string;
-  request_uri?: string;
-  id_token_type?: string;
+  nonce: string;
+}
+
+export enum InternalErrorType {
+  user_cancelled = 'user_cancelled',
+  registration_value_not_supported = 'registration_value_not_supported',
+  subject_syntax_types_not_supported = 'subject_syntax_types_not_supported',
+  invalid_registration_uri = 'invalid_registration_uri',
+  invalid_registration_object = 'invalid_registration_object',
+}
+
+export type MeeResponseInternalError = {
+  error: InternalErrorType
+};
+
+export interface DidKey {
+  '@context': string;
+  authentication: string[];
+  id: string;
+  verificationMethod: {
+    controller: string;
+    id: string;
+    type: string;
+    publicKeyJwk: JWK;
+  }[]
 }

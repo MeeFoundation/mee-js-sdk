@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="module" src="/src/mee-sdk.ts"></script>
+  <title>Mee JS SDK Test Page</title>
+</head>
+
+<body style="margin: 0;">
+  <div style="background-color: rgb(78, 133, 142); height: 100vh;padding: 15px;" id="root">
+
+    <div style="text-align: center; margin-bottom: 50px; font-weight: bold; font-size: larger;">Welcome to Mee JS SDK
+    </div>
+    <div style="width: 250px; margin: 0 auto;" id="mee"></div>
+
+    <div style="margin: 50px auto;background-color: white;padding: 50px;border-radius: 10px;max-width: 500px;">
+      <h1 id="resultMark"></h1>
+      <p style="line-break: anywhere;" id="result"></p>
+    </div>
+  </div>
+</body>
+
 </html>

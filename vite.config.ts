@@ -4,6 +4,16 @@ import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/dids': {
+        target: 'http://localhost',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      },
+    }
+  },
   plugins: [
     dts({
       include: "src/mee-sdk.ts",

@@ -1,16 +1,31 @@
+import { SignJWT } from 'jose';
 import meeLogo from '../assets/meeLogo.svg';
-import { MeeConfigurationInternal, MeeEnvType } from './internalTypes';
-import { MeeConfiguration } from './types';
+import { makeHash, makeRandomString } from './helpers';
+import { MeeConfigurationInternal } from './internalTypes';
+import { MeeConfiguration, MeeError, MeeErrorTypes } from './types';
 
 const MEE_URL = 'https://auth-dev.mee.foundation/#/';
 const CONSENT = 'consent';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let meeInitData: MeeConfigurationInternal | null = null;
+// eslint-disable-next-line import/no-mutable-exports
+export let meeEncodedData: string | null = null;
+export const nonce: string = makeRandomString(50);
 
-export const encodeString = (data: unknown): string => btoa(JSON.stringify(data));
-export function decodeString<T>(data: string):T {
-  return JSON.parse(atob(data));
+export async function encodeRequest(request: MeeConfigurationInternal): Promise<string> {
+  if (meeInitData === null || typeof meeInitData.redirect_uri === 'undefined') {
+    throw new MeeError('Please provide valid redirect url', MeeErrorTypes.request_malformed);
+  }
+  const secret = new TextEncoder().encode(
+    'cc7e0d44fd473002f1c42167459001140ec6389b7353f8088f4d9a95f2f596f2',
+  );
+  const response = await new SignJWT({ ...request })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setAudience(meeInitData?.redirect_uri)
+    .sign(secret);
+  return response;
 }
 
 export const getQueryParameters = (parameterName: string): string | undefined => {
@@ -20,18 +35,21 @@ export const getQueryParameters = (parameterName: string): string | undefined =>
   return result?.split('=')[1];
 };
 
-export const goToMee = async () => {
-  if (meeInitData !== null) {
-    const encodedData = encodeString(meeInitData);
-    window.open(meeInitData.client_id || meeInitData.client_metadata?.client_id
-      ? `${MEE_URL}${CONSENT}/${encodedData}`
-      : `${MEE_URL}app`, '_blank');
+export const goToMee = () => {
+  try {
+    localStorage.setItem('meeNonce', nonce);
+  } finally {
+    if (meeInitData !== null && meeEncodedData !== null) {
+      window.open(meeInitData.client_id
+        ? `${MEE_URL}${CONSENT}/${meeEncodedData}`
+        : `${MEE_URL}app`, '_blank');
+    }
   }
 };
 
 const textColor = '#111827';
 
-export const createButton = (containerId: string) => {
+export const createButton = async (containerId: string) => {
   const container = document.getElementById(containerId);
   const button = document.createElement('button');
   const logo = document.createElement('img');
@@ -69,14 +87,14 @@ export const createButton = (containerId: string) => {
     button.style.boxShadow = '';
     return undefined;
   });
-  button.addEventListener('click', () => goToMee());
 
+  button.addEventListener('click', () => goToMee());
   button.appendChild(logo);
   button.appendChild(text);
   container?.appendChild(button);
 };
 
-export const initInternal = (config: MeeConfiguration) => {
+export const initInternal = async (config: MeeConfiguration) => {
   if (typeof config.container_id !== 'undefined') {
     createButton(config.container_id);
   }
@@ -84,10 +102,11 @@ export const initInternal = (config: MeeConfiguration) => {
   meeInitData = {
     ...omitContainerId,
     client_metadata: typeof config.client_metadata !== 'undefined'
-      ? { ...config.client_metadata, type: 'web' }
+      ? { ...config.client_metadata, application_type: 'web' }
       : undefined,
     scope: 'openid',
-    env: MeeEnvType.DEV,
-    response_type: 'id_token token',
+    response_type: 'id_token',
+    nonce: await makeHash(nonce),
   };
+  meeEncodedData = await encodeRequest(meeInitData);
 };
