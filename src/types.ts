@@ -1,8 +1,8 @@
 /* eslint-disable max-classes-per-file */
 export enum MeeConsentDuration {
-  EPHEMERAL = 'Ephemeral',
-  WHILE_USING = 'WhileUsingApp',
-  PERMANENT = 'UntilConnectionDeletion',
+  ephemeral = 'ephemeral',
+  whileUsingApp = 'while_using_app',
+  untilConnectionDeletion = 'until_connection_deletion',
 }
 
 export type ClaimType = 'string' | 'date' | 'boolean' | 'email' | 'address' | 'card';

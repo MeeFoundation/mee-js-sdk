@@ -3,7 +3,7 @@ import {
   decodeJwt, importJWK, jwtVerify,
 } from 'jose';
 import { didUriVerification, makeHash } from './helpers';
-// import { meeInitData } from './internal';
+import { meeInitData } from './internal';
 import { DidKey } from './internalTypes';
 import {
   MeeError, MeeResponse, MeeResponsePositive,
@@ -32,7 +32,7 @@ export async function decodeString(jwt: string):Promise<MeeResponse> {
     const key = await importJWK(es256key.publicKeyJwk, 'ES256');
     console.log('key: ', key);
     const result = await jwtVerify(jwt, key, {
-      // audience: meeInitData?.client_id,
+      audience: meeInitData?.client_id,
     });
     console.log('result: ', result);
     const { payload } = result;

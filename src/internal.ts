@@ -101,6 +101,7 @@ export const initInternal = async (config: MeeConfiguration) => {
   const { container_id: containerId, ...omitContainerId } = config;
   meeInitData = {
     ...omitContainerId,
+    client_id: config.client_id || config.redirect_uri,
     client_metadata: typeof config.client_metadata !== 'undefined'
       ? { ...config.client_metadata, application_type: 'web' }
       : undefined,

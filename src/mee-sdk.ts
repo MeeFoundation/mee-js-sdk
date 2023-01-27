@@ -21,7 +21,6 @@ export const check = (token: string): boolean => token.length > 0;
 
 export const test = async () => {
   init({
-    client_id: 'did:web:localhost:dids:15619329-53f1-4cf5-ba63-e4505772a175',
     client_metadata: {
       client_name: 'The New York Times',
       logo_uri: 'https://nytimes.com/favicon.ico',
@@ -32,12 +31,21 @@ export const test = async () => {
     container_id: 'mee',
     claims: {
       id_token: {
-        name: {
+        last_name: {
           attribute_type: 'https://schema.org/name',
           name: 'Last Name',
           typ: 'string',
           essential: true,
-          retention_duration: MeeConsentDuration.EPHEMERAL,
+          retention_duration: MeeConsentDuration.whileUsingApp,
+          business_purpose: '',
+          is_sensitive: true,
+        },
+        first_name: {
+          attribute_type: 'https://schema.org/name',
+          name: 'First Name',
+          typ: 'string',
+          essential: false,
+          retention_duration: MeeConsentDuration.ephemeral,
           business_purpose: '',
           is_sensitive: true,
         },
