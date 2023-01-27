@@ -78,6 +78,7 @@ export enum MeeErrorTypes {
   invalid_registration_object = 'invalid_registration_object',
   validation_failed = 'validation_failed', // SIOP 10.3: Other error codes MAY be used.
   request_malformed = 'request_malformed',
+  unknown_error = 'unknown_error',
 }
 export class MeeError extends Error {
   error: MeeErrorTypes;

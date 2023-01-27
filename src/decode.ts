@@ -9,7 +9,7 @@ import {
   MeeError, MeeResponse, MeeResponsePositive,
 } from './types';
 
-export async function decodeString(jwt: string):Promise<MeeResponse> {
+export async function validateResponse(jwt: string):Promise<MeeResponse> {
   try {
     const payloadNotVerified = decodeJwt(jwt);
     if (typeof payloadNotVerified.sub === 'undefined'

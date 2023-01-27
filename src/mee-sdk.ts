@@ -3,9 +3,9 @@ import {
   getQueryParameters, goToMee, initInternal,
 } from './internal';
 import {
-  MeeConfiguration, MeeConsentDuration, MeeResponse,
+  MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse,
 } from './types';
-import { decodeString } from './decode';
+import { validateResponse } from './decode';
 
 export const authorize = () => {
   goToMee();
@@ -14,7 +14,22 @@ export const authorize = () => {
 export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => void) => {
   initInternal(config);
   const token = getQueryParameters('token');
-  if (typeof token !== 'undefined') decodeString(token).then((data) => callback(data));
+  if (typeof token !== 'undefined') {
+    if (token.startsWith('error:')) {
+      const errorParts = token.split('error_description:');
+      const errorDescription = errorParts.length === 2 ? errorParts[1].replace(/%20/g, ' ') : '';
+      const errorCodePart = errorParts[0].split('error:');
+      const errorCode = errorCodePart.length === 2 ? errorCodePart[1] : '';
+      const isErrorCodeValid = Object.values(String(MeeErrorTypes)).includes(errorCode);
+      const error = new MeeError(
+        errorDescription,
+        isErrorCodeValid ? errorCode as MeeErrorTypes : MeeErrorTypes.unknown_error,
+      );
+      callback(error);
+    } else {
+      validateResponse(token).then((data) => callback(data));
+    }
+  }
 };
 
 export const check = (token: string): boolean => token.length > 0;
