@@ -16,19 +16,19 @@ export default defineConfig({
   },
   plugins: [
     dts({
-      include: "src/mee-sdk.ts",
+      include: ["src/mee-sdk.ts", "src/types.ts"],
       beforeWriteFile: (filePath: string, content: string) => {
         const rootFilePath = filePath.replace("/src", ""); // place d.ts in dist/ instead of dist/src/
         return {filePath: rootFilePath, content}
-      }
+      },
+      insertTypesEntry: true,
     })
   ],
   build: {
     lib: {
         entry: path.resolve(__dirname, "src/mee-sdk.ts"),
-        name: "MeeWebSDK",
-        formats: ["umd", "es"],
-        fileName: (formats) => formats.includes("es") ? "mee-sdk-es.js": "mee-sdk.js",
+        name: "mee-js-sdk",
+        formats: ["umd","es", "cjs"],
     },
   },
   resolve: {

@@ -1,6 +1,11 @@
 {
   "name": "mee-js-sdk",
-  "version": "0.0.0",
+  "version": "0.1.3",
+  "main": "mee-js-sdk.js",
+  "module": "./dist/mee-js-sdk.mjs",
+  "browser": "./dist/mee-js-sdk.umd.js",
+  "types": "dist/mee-sdk.d.ts",
+  "files": ["dist", "tsconfig.json"],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

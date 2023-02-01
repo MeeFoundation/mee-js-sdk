@@ -1,10 +1,17 @@
 # Mee JS SDK
 
+### Install local npm registry:
+```docker-compose up -d```
+
 ### Install dependencies:
 ```yarn install```
 
 ### Run (development mode):
 ```yarn dev```
+
+### Add package to local npm registry:
+```npm login --registry http://localhost:4873```
+```npm publish --registry http://localhost:4873```
 
 ### Build (production mode)
 ```yarn build```

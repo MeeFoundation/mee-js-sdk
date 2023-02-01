@@ -11,16 +11,21 @@ export const authorize = () => {
   goToMee();
 };
 
+export {
+  MeeError, MeeErrorTypes, MeeConsentDuration,
+};
+
 export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => void) => {
   initInternal(config);
   const token = getQueryParameters('token');
   if (typeof token !== 'undefined') {
     if (token.startsWith('error:')) {
-      const errorParts = token.split('error_description:');
+      const errorParts = token.split(',error_description:');
       const errorDescription = errorParts.length === 2 ? errorParts[1].replace(/%20/g, ' ') : '';
       const errorCodePart = errorParts[0].split('error:');
       const errorCode = errorCodePart.length === 2 ? errorCodePart[1] : '';
-      const isErrorCodeValid = Object.values(String(MeeErrorTypes)).includes(errorCode);
+      const isErrorCodeValid = errorCode in MeeErrorTypes;
+
       const error = new MeeError(
         errorDescription,
         isErrorCodeValid ? errorCode as MeeErrorTypes : MeeErrorTypes.unknown_error,
@@ -32,9 +37,7 @@ export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => 
   }
 };
 
-export const check = (token: string): boolean => token.length > 0;
-
-export const test = async () => {
+const test = async () => {
   init({
     client_metadata: {
       client_name: 'The New York Times',

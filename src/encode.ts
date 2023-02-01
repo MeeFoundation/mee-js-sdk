@@ -1,3 +1,8 @@
+import { SignJWT } from 'jose';
+import { meeInitData } from './internal';
+import { MeeConfigurationInternal } from './internalTypes';
+import { MeeError, MeeErrorTypes } from './types';
+
 export async function encodeRequest(request: MeeConfigurationInternal): Promise<string> {
   if (meeInitData === null || typeof meeInitData.redirect_uri === 'undefined') {
     throw new MeeError('Please provide valid redirect url', MeeErrorTypes.request_malformed);
