@@ -11,6 +11,9 @@ const CONSENT = 'consent';
 export let meeInitData: MeeConfigurationInternal | null = null;
 // eslint-disable-next-line import/no-mutable-exports
 export let meeEncodedData: string | null = null;
+// eslint-disable-next-line import/no-mutable-exports
+export let savedContainerId: string | null = null;
+
 export const nonce: string = makeRandomString(50);
 
 export async function encodeRequest(request: MeeConfigurationInternal): Promise<string> {
@@ -94,11 +97,17 @@ export const createButton = async (containerId: string) => {
   container?.appendChild(button);
 };
 
+export const initButtonInternal = () => {
+  if (savedContainerId !== null) createButton(savedContainerId);
+};
+
 export const initInternal = async (config: MeeConfiguration) => {
   if (typeof config.container_id !== 'undefined') {
     createButton(config.container_id);
   }
+
   const { container_id: containerId, ...omitContainerId } = config;
+  savedContainerId = containerId ?? null;
   meeInitData = {
     ...omitContainerId,
     client_id: config.client_id || config.redirect_uri,

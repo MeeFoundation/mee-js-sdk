@@ -38,7 +38,10 @@ export type MeeResponsePositive = {
   [name: string]: ClaimData & { value: string }
 } & MeeResponseMeta;
 
-export type MeeResponse = MeeResponsePositive | MeeError;
+export type MeeResponse = {
+  data?: MeeResponsePositive
+  error?: MeeError
+};
 
 export type MeeClient = {
   client_name: string,

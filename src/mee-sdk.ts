@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {
-  getQueryParameters, goToMee, initInternal,
+  getQueryParameters, goToMee, initButtonInternal, initInternal,
 } from './internal';
 import {
   MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse,
@@ -13,6 +13,10 @@ export const authorize = () => {
 
 export {
   MeeError, MeeErrorTypes, MeeConsentDuration,
+};
+
+export type {
+  MeeConfiguration, MeeResponse,
 };
 
 export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => void) => {
@@ -30,11 +34,15 @@ export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => 
         errorDescription,
         isErrorCodeValid ? errorCode as MeeErrorTypes : MeeErrorTypes.unknown_error,
       );
-      callback(error);
+      callback({ error, data: undefined });
     } else {
       validateResponse(token).then((data) => callback(data));
     }
   }
+};
+
+export const initButton = () => {
+  initButtonInternal();
 };
 
 const test = async () => {
