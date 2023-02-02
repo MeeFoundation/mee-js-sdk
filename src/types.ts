@@ -23,20 +23,9 @@ export type MeeClaim = {
   }
 };
 
-type MeeResponseMeta = {
-  iss: string
-  sub: string
-  sub_jwk: string
-  aud: string
-  exp: string
-  iat: string
-  nonce: string
-  error: undefined
-};
-
 export type MeeResponsePositive = {
   [name: string]: ClaimData & { value: string }
-} & MeeResponseMeta;
+};
 
 export type MeeResponse = {
   data?: MeeResponsePositive

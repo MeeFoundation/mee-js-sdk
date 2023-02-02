@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {
-  decodeJwt, importJWK, jwtVerify,
+  decodeJwt, importJWK, JWTPayload, jwtVerify,
 } from 'jose';
 import { didUriVerification, makeHash } from './helpers';
 import { meeInitData } from './internal';
@@ -8,6 +8,14 @@ import { DidKey } from './internalTypes';
 import {
   MeeError, MeeResponse, MeeResponsePositive,
 } from './types';
+
+function removeServiceData(data: JWTPayload): MeeResponsePositive {
+  const {
+    aud, exp, iat, iss, jti, nbf, sub, nonce, ...rest
+  } = data;
+
+  return rest as unknown as MeeResponsePositive;
+}
 
 export async function validateResponse(jwt: string):Promise<MeeResponse> {
   try {
@@ -50,7 +58,7 @@ export async function validateResponse(jwt: string):Promise<MeeResponse> {
     const hashLocalNonce = await makeHash(savedNonce);
     console.log('nonce:', savedNonce, hashLocalNonce, payload.nonce);
     if (hashLocalNonce !== payload.nonce) return { error: new MeeError('Nonce is not valid') };
-    return { data: payload as unknown as MeeResponsePositive };
+    return { data: removeServiceData(payload) };
   } catch (e) {
     if (typeof e === 'string') return { error: new MeeError(e) };
     return { error: new MeeError(`unknown error ${e}`) };
