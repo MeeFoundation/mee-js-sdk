@@ -1,35 +1,30 @@
-import { SignJWT } from 'jose';
+/* eslint-disable import/no-mutable-exports */
+import {
+  exportJWK,
+} from 'jose';
 import meeLogo from '../assets/meeLogo.svg';
-import { makeHash, makeRandomString } from './helpers';
+import { validateResponse } from './decode';
+import { encodeRequest } from './encode';
+import {
+  generateKeys, keyToJwk, keyToPem,
+} from './generateKeys';
+import {
+  makeHash, makeRandomString, meeLSDataToString, removeURLParameter,
+} from './helpers';
 import { MeeConfigurationInternal } from './internalTypes';
-import { MeeConfiguration, MeeError, MeeErrorTypes } from './types';
+import {
+  MeeConfiguration, MeeError, MeeErrorTypes, MeeResponse,
+} from './types';
 
 const MEE_URL = 'https://auth-dev.mee.foundation/#/';
 const CONSENT = 'consent';
 
-// eslint-disable-next-line import/no-mutable-exports
-export let meeInitData: MeeConfigurationInternal | null = null;
-// eslint-disable-next-line import/no-mutable-exports
-export let meeEncodedData: string | null = null;
-// eslint-disable-next-line import/no-mutable-exports
-export let savedContainerId: string | null = null;
+let meeInitData: MeeConfigurationInternal | null = null;
+let meeEncodedData: string | null = null;
+let savedContainerId: string | null = null;
+let privateKeys: { encrypt: string, sign: string } | null = null;
 
 export const nonce: string = makeRandomString(50);
-
-export async function encodeRequest(request: MeeConfigurationInternal): Promise<string> {
-  if (meeInitData === null || typeof meeInitData.redirect_uri === 'undefined') {
-    throw new MeeError('Please provide valid redirect url', MeeErrorTypes.request_malformed);
-  }
-  const secret = new TextEncoder().encode(
-    'cc7e0d44fd473002f1c42167459001140ec6389b7353f8088f4d9a95f2f596f2',
-  );
-  const response = await new SignJWT({ ...request })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setAudience(meeInitData?.redirect_uri)
-    .sign(secret);
-  return response;
-}
 
 export const getQueryParameters = (parameterName: string): string | undefined => {
   const query = window.location.search.substring(1);
@@ -40,7 +35,10 @@ export const getQueryParameters = (parameterName: string): string | undefined =>
 
 export const goToMee = () => {
   try {
-    localStorage.setItem('meeNonce', nonce);
+    if (nonce !== null && privateKeys !== null) {
+      const meeLSData = meeLSDataToString({ nonce, ...privateKeys });
+      localStorage.setItem('meeData', meeLSData);
+    }
   } finally {
     if (meeInitData !== null && meeEncodedData !== null) {
       window.open(meeInitData.client_id
@@ -101,22 +99,68 @@ export const initButtonInternal = () => {
   if (savedContainerId !== null) createButton(savedContainerId);
 };
 
-export const initInternal = async (config: MeeConfiguration) => {
+export const initInternal = async (
+  config: MeeConfiguration,
+  callback: (data: MeeResponse) => void,
+) => {
   if (typeof config.container_id !== 'undefined') {
     createButton(config.container_id);
   }
 
+  const keys = await generateKeys();
+
+  const ePub = await keyToJwk(keys.encrypt.publicKey);
   const { container_id: containerId, ...omitContainerId } = config;
   savedContainerId = containerId ?? null;
   meeInitData = {
     ...omitContainerId,
     client_id: config.client_id || config.redirect_uri,
     client_metadata: typeof config.client_metadata !== 'undefined'
-      ? { ...config.client_metadata, application_type: 'web' }
+      ? {
+        ...config.client_metadata,
+        application_type: 'web',
+        jwks: [{
+          ...ePub,
+          alg: 'RSA-OAEP',
+          key_ops: [
+            'encrypt',
+            'wrapKey',
+          ],
+        }],
+      }
       : undefined,
     scope: 'openid',
     response_type: 'id_token',
     nonce: await makeHash(nonce),
   };
-  meeEncodedData = await encodeRequest(meeInitData);
+  const pJWK = await exportJWK(keys.sign.publicKey);
+  meeEncodedData = await encodeRequest(meeInitData, meeInitData, keys.sign.privateKey, pJWK);
+  const sPriv = await keyToPem(keys.sign.privateKey);
+  const ePriv = await keyToPem(keys.encrypt.privateKey);
+  privateKeys = { encrypt: ePriv, sign: sPriv };
+
+  const token = getQueryParameters('meeAuthToken');
+  if (typeof token !== 'undefined') {
+    if (token.startsWith('error:')) {
+      const errorParts = token.split(',error_description:');
+      const errorDescription = errorParts.length === 2 ? errorParts[1].replace(/%20/g, ' ') : '';
+      const errorCodePart = errorParts[0].split('error:');
+      const errorCode = errorCodePart.length === 2 ? errorCodePart[1] : '';
+      const isErrorCodeValid = errorCode in MeeErrorTypes;
+
+      const error = new MeeError(
+        errorDescription,
+        isErrorCodeValid ? errorCode as MeeErrorTypes : MeeErrorTypes.unknown_error,
+      );
+      callback({ error, data: undefined });
+    } else {
+      validateResponse(token, meeInitData.client_id).then((data) => callback(data));
+      window.history.replaceState(
+        {},
+        document.title,
+        removeURLParameter(window.location.href, 'meeAuthToken'),
+
+      );
+    }
+  }
 };

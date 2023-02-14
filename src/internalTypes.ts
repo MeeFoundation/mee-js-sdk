@@ -8,7 +8,8 @@ export enum MeeEnvType {
 }
 
 export interface MeeClientInternal extends MeeClient {
-  application_type: 'web' | 'mobile'
+  application_type: 'web' | 'mobile',
+  jwks: JsonWebKey[]
 }
 
 export interface MeeConfigurationInternal extends Omit<MeeConfiguration, 'container_id'> {
@@ -42,4 +43,10 @@ export interface DidKey {
     type: string;
     publicKeyJwk: JWK;
   }[]
+}
+
+export interface MeeLSData {
+  nonce: string;
+  encrypt: string;
+  sign: string;
 }

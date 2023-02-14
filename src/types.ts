@@ -24,7 +24,7 @@ export type MeeClaim = {
 };
 
 export type MeeResponsePositive = {
-  [name: string]: ClaimData & { value: string }
+  [name: string]: string
 };
 
 export type MeeResponse = {

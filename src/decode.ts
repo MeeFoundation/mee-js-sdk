@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
 import {
-  decodeJwt, importJWK, JWTPayload, jwtVerify,
+  compactDecrypt,
+  decodeJwt,
+  importJWK, importPKCS8, JWK, JWTPayload, jwtVerify,
 } from 'jose';
-import { didUriVerification, makeHash } from './helpers';
-import { meeInitData } from './internal';
+import {
+  clearSavedData, didUriVerification, makeHash, stringToMeeLSData,
+} from './helpers';
 import { DidKey } from './internalTypes';
 import {
   MeeError, MeeResponse, MeeResponsePositive,
@@ -11,40 +14,58 @@ import {
 
 function removeServiceData(data: JWTPayload): MeeResponsePositive {
   const {
-    aud, exp, iat, iss, jti, nbf, sub, nonce, ...rest
+    aud, exp, iat, jti, nbf, sub, nonce, ...rest
   } = data;
 
   return rest as unknown as MeeResponsePositive;
 }
 
-export async function validateResponse(jwt: string):Promise<MeeResponse> {
+const getKeyFromDidWeb = async (payload: JWTPayload): Promise<JWK | null> => {
   try {
-    const payloadNotVerified = decodeJwt(jwt);
-    if (typeof payloadNotVerified.sub === 'undefined'
-    || !didUriVerification.test(payloadNotVerified.sub)) {
-      return { error: new MeeError('Did uri invalid') };
+    if (typeof payload.sub === 'undefined'
+    || !didUriVerification.test(payload.sub)) {
+      return null;
     }
-    console.log('payload: ', payloadNotVerified);
-    const didPath = payloadNotVerified.sub?.split('did:web:');
+    const didPath = payload.sub?.split('did:web:');
     if (typeof didPath === 'undefined' || didPath.length !== 2) {
-      return { error: new MeeError('Can not parse DID path') };
+      return null;
     }
-    const didUrl = `http://${didPath[1].replaceAll(':', '/')}/did.json`;
-    console.log('didUrl: ', didUrl);
+    const schema = 'http://';
+    const didUrl = `${schema}${didPath[1].replaceAll(':', '/')}/did.json`;
     const didKey: DidKey = await fetch(didUrl).then((r) => r.json());
-    console.log('didKey: ', didKey);
     const es256key = didKey.verificationMethod.find((key) => key.type === 'Ed25519VerificationKey2018');
-    if (typeof es256key === 'undefined') return { error: new MeeError('Valid key not found') };
-    if (didKey.id !== payloadNotVerified.sub) {
-      return { error: new MeeError('DID key id is not equal to sub') };
+    if (typeof es256key === 'undefined') return null;
+    if (didKey.id !== payload.sub) {
+      return null;
     }
-    console.log('es256key: ', es256key);
-    const key = await importJWK(es256key.publicKeyJwk, 'ES256');
-    console.log('key: ', key);
+    return es256key.publicKeyJwk;
+  } catch {
+    return null;
+  }
+};
+
+export async function validateResponse(jwtEncrypted: string, clientId?: string):Promise<MeeResponse> {
+  try {
+    const savedMeeLSData = localStorage.getItem('meeData');
+    clearSavedData();
+    const savedMeeLSDataParsed = stringToMeeLSData(savedMeeLSData);
+    if (typeof savedMeeLSDataParsed === 'undefined'
+    || typeof savedMeeLSDataParsed.encrypt === 'undefined') {
+      return { error: new MeeError('Internal error') };
+    }
+    const ePriv = await importPKCS8(savedMeeLSDataParsed.encrypt, 'RSA-OAEP');
+    const decrypted = await compactDecrypt(jwtEncrypted, ePriv);
+    const jwt = new TextDecoder().decode(decrypted.plaintext);
+    const payloadNotVerified = decodeJwt(jwt);
+
+    const jwk = await getKeyFromDidWeb(payloadNotVerified);
+    if (jwk === null) return { error: new MeeError('Can not get jwk from payload') };
+
+    const key = await importJWK(jwk, 'ES256');
+    console.log('jwt: ', jwt);
     const result = await jwtVerify(jwt, key, {
-      audience: meeInitData?.client_id,
+      audience: clientId,
     });
-    console.log('result: ', result);
     const { payload } = result;
     if (typeof payload.error !== 'undefined') {
       return { error: new MeeError(payload.error as string) };
@@ -52,15 +73,13 @@ export async function validateResponse(jwt: string):Promise<MeeResponse> {
     if (!(payload.iss === payload.sub)) {
       return { error: new MeeError('iss should be equal to sub') };
     }
-    console.log('No errors. Iss and sub verified');
-    const savedNonce = localStorage.getItem('meeNonce');
-    if (savedNonce === null) return { error: new MeeError('No nonce found') };
-    const hashLocalNonce = await makeHash(savedNonce);
-    console.log('nonce:', savedNonce, hashLocalNonce, payload.nonce);
+
+    if (typeof savedMeeLSDataParsed === 'undefined'
+     || savedMeeLSDataParsed?.nonce === null) return { error: new MeeError('No nonce found') };
+    const hashLocalNonce = await makeHash(savedMeeLSDataParsed.nonce);
     if (hashLocalNonce !== payload.nonce) return { error: new MeeError('Nonce is not valid') };
     return { data: removeServiceData(payload) };
   } catch (e) {
-    if (typeof e === 'string') return { error: new MeeError(e) };
-    return { error: new MeeError(`unknown error ${e}`) };
+    return { error: new MeeError(e as string) };
   }
 }
