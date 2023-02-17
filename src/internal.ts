@@ -9,7 +9,7 @@ import {
   generateKeys, keyToJwk, keyToPem,
 } from './generateKeys';
 import {
-  makeHash, makeRandomString, meeLSDataToString, removeURLParameter,
+  makeHash, makeRandomString, meeLSDataToString, removeURLParameter, setLocalStorageExpireCheck,
 } from './helpers';
 import { MeeConfigurationInternal } from './internalTypes';
 import {
@@ -24,8 +24,10 @@ let meeEncodedData: string | null = null;
 let savedContainerId: string | null = null;
 let privateKeys: { encrypt: string, sign: string } | null = null;
 
+/** @internal */
 export const nonce: string = makeRandomString(50);
 
+/** @internal */
 export const getQueryParameters = (parameterName: string): string | undefined => {
   const query = window.location.search.substring(1);
   const items = query.split('&');
@@ -33,10 +35,13 @@ export const getQueryParameters = (parameterName: string): string | undefined =>
   return result?.split('=')[1];
 };
 
+/** @internal */
 export const goToMee = () => {
   try {
+    const localStorageExpireHours = import.meta.env.VITE_KEY_EXPIRE_HOURS;
     if (nonce !== null && privateKeys !== null) {
-      const meeLSData = meeLSDataToString({ nonce, ...privateKeys });
+      const exp = Date.now() + (1000 * 60 * 60 * localStorageExpireHours);
+      const meeLSData = meeLSDataToString({ nonce, ...privateKeys, exp });
       localStorage.setItem('meeData', meeLSData);
     }
   } finally {
@@ -50,6 +55,7 @@ export const goToMee = () => {
 
 const textColor = '#111827';
 
+/** @internal */
 export const createButton = async (containerId: string) => {
   const container = document.getElementById(containerId);
   const button = document.createElement('button');
@@ -95,14 +101,17 @@ export const createButton = async (containerId: string) => {
   container?.appendChild(button);
 };
 
+/** @internal */
 export const initButtonInternal = () => {
   if (savedContainerId !== null) createButton(savedContainerId);
 };
 
+/** @internal */
 export const initInternal = async (
   config: MeeConfiguration,
   callback: (data: MeeResponse) => void,
 ) => {
+  setLocalStorageExpireCheck();
   if (typeof config.container_id !== 'undefined') {
     createButton(config.container_id);
   }
@@ -139,7 +148,7 @@ export const initInternal = async (
   const ePriv = await keyToPem(keys.encrypt.privateKey);
   privateKeys = { encrypt: ePriv, sign: sPriv };
 
-  const token = getQueryParameters('meeAuthToken');
+  const token = getQueryParameters('mee_auth_token');
   if (typeof token !== 'undefined') {
     if (token.startsWith('error:')) {
       const errorParts = token.split(',error_description:');
@@ -158,7 +167,7 @@ export const initInternal = async (
       window.history.replaceState(
         {},
         document.title,
-        removeURLParameter(window.location.href, 'meeAuthToken'),
+        removeURLParameter(window.location.href, 'mee_auth_token'),
 
       );
     }

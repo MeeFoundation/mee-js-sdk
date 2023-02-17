@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+
 export enum MeeConsentDuration {
   ephemeral = 'ephemeral',
   whileUsingApp = 'while_using_app',
@@ -7,6 +8,7 @@ export enum MeeConsentDuration {
 
 export type ClaimType = 'string' | 'date' | 'boolean' | 'email' | 'address' | 'card';
 
+/** Claim */
 export type ClaimData = {
   attribute_type: string, // 'https://schema.org/email'
   name: string,
@@ -17,21 +19,25 @@ export type ClaimData = {
   is_sensitive: boolean,
 };
 
+/** Claims request */
 export type MeeClaim = {
   id_token?: {
     [name: string]: ClaimData
   }
 };
 
+/** Response, containing claims */
 export type MeeResponsePositive = {
   [name: string]: string
 };
 
+/** Contains either data or error. */
 export type MeeResponse = {
   data?: MeeResponsePositive
   error?: MeeError
 };
 
+/** Client metadata */
 export type MeeClient = {
   client_name: string,
   logo_uri: string,
@@ -39,6 +45,7 @@ export type MeeClient = {
   contacts: string[]
 };
 
+/** Information, required for Mee initialization */
 export interface MeeConfiguration {
   client_id?: string;
   claims?: MeeClaim;
@@ -47,6 +54,7 @@ export interface MeeConfiguration {
   redirect_uri: string;
 }
 
+/** Error types */
 export enum MeeErrorTypes {
   invalid_scope = 'invalid_scope',
   unauthorized_client = 'unauthorized_client',
@@ -72,6 +80,8 @@ export enum MeeErrorTypes {
   request_malformed = 'request_malformed',
   unknown_error = 'unknown_error',
 }
+
+/** Error */
 export class MeeError extends Error {
   error: MeeErrorTypes;
 

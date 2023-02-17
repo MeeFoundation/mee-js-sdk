@@ -2,6 +2,7 @@ import { JWK, KeyLike, SignJWT } from 'jose';
 import { MeeConfigurationInternal } from './internalTypes';
 import { MeeError, MeeErrorTypes } from './types';
 
+/** @internal */
 export async function encodeRequest(
   request: MeeConfigurationInternal,
   meeInitData: MeeConfigurationInternal,

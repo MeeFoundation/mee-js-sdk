@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 
 import { goToMee, initButtonInternal, initInternal } from './internal';
 import {
-  MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse,
+  MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse, MeeResponsePositive,
 } from './types';
 
 export const authorize = () => {
@@ -14,7 +15,7 @@ export {
 };
 
 export type {
-  MeeConfiguration, MeeResponse,
+  MeeConfiguration, MeeResponse, MeeResponsePositive,
 };
 
 export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => void) => {

@@ -1,11 +1,13 @@
 {
   "name": "mee-js-sdk",
-  "version": "0.0.17",
+  "version": "0.0.24",
   "main": "mee-js-sdk.js",
   "module": "./dist/mee-js-sdk.es.js",
   "browser": "./dist/mee-js-sdk.umd.js",
   "types": "dist/mee-sdk.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -14,10 +16,12 @@
     "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
-    "jose": "^4.11.2"
+    "big-integer": "^1.6.51",
+    "jose": "^4.11.2",
+    "multiformats": "^11.0.1"
   },
   "devDependencies": {
-    "@types/node": "^17.0.9",
+    "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "add": "^2.0.6",
