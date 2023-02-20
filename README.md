@@ -28,7 +28,7 @@ npm publish --registry http://localhost:4873
 Parameters:
 
 ```typescript
-init(config: MeeConfiguration, onAuthorize: (data: MeeResponse) => void)
+init(config: MeeConfiguration, on_authorize: (data: MeeResponse) => void)
 
 MeeConfiguration {
   claims?: MeeClaim;
