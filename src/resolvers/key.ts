@@ -62,7 +62,7 @@ export const getKeyFromDidKey = async (jwt: JWTPayload): Promise<JWK | null> => 
     if (data[0] === DID_KEY_P256_PREFIX[0] && data[1] === DID_KEY_P256_PREFIX[1]) {
       const payload = data.slice(2, data.length);
       if (payload.length === 33 || payload.length === 64 || payload.length === 65) {
-        const unwrapped = ECPointDecompress(toHexString(payload));
+        const unwrapped: string = ECPointDecompress(toHexString(payload));
         const k = await crypto.subtle.importKey(
           'raw',
           fromHexString(unwrapped),

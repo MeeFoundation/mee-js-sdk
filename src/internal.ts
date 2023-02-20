@@ -16,7 +16,7 @@ import {
   MeeConfiguration, MeeError, MeeErrorTypes, MeeResponse,
 } from './types';
 
-const MEE_URL = 'https://auth-dev.mee.foundation/#/';
+const MEE_URL = 'https://auth.mee.foundation/#/';
 const CONSENT = 'consent';
 
 let meeInitData: MeeConfigurationInternal | null = null;
