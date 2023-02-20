@@ -29,9 +29,9 @@ export const initButton = () => {
 const test = async () => {
   init({
     client_metadata: {
-      client_name: 'The New York Times',
-      logo_uri: 'https://nytimes.com/favicon.ico',
-      display_url: 'nytimes.com',
+      client_name: 'Mee Foundation',
+      logo_uri: 'http://localhost:3000/favicon.png',
+      display_url: 'mee.foundation',
       contacts: [],
     },
     redirect_uri: 'http://localhost:3000',

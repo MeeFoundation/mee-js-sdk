@@ -123,7 +123,7 @@ export const initInternal = async (
   savedContainerId = containerId ?? null;
   meeInitData = {
     ...omitContainerId,
-    client_id: config.client_id || config.redirect_uri,
+    client_id: config.redirect_uri,
     client_metadata: typeof config.client_metadata !== 'undefined'
       ? {
         ...config.client_metadata,

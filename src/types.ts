@@ -47,7 +47,6 @@ export type MeeClient = {
 
 /** Information, required for Mee initialization */
 export interface MeeConfiguration {
-  client_id?: string;
   claims?: MeeClaim;
   client_metadata?: MeeClient;
   container_id?: string;
