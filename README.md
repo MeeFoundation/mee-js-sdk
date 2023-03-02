@@ -1,30 +1,30 @@
 # Mee JS SDK
 
-## What is the Mee identity agent
+## What is Mee Identity Agent
 
-The Mee identity agent is an app that offers privacy and convenience by giving the user more control over their own personal information as they interact with websites, mobile apps, and other user's agents.
+The Mee Identity Agent is an app that offers privacy and convenience by giving the user more control over their own personal information as they interact with websites, mobile apps, and other user's agents.
 
-The agent runs on the user's edge devices (mobile phone, laptop, etc.) where it holds, entirely under the user's control, a local, private database of the user's personal information. When an app/site wants to know something about the user, the agent shares as much or as little as the user chooses.
+The Mee Identity Agent runs on the user's edge devices (a mobile phone, laptop, etc.) where it holds, entirely under the user's control, a local, private database where the user's personal information is stored. When an app/site wants to know something about the user, the agent shares as much or as little as the user prefers.
 
 You can find more at our [Docs](https://docs.mee.foundation/Identity_agent.html)
 
 ## What is Mee JS SDK
 
-Mee JS SDK provides all nessisary interfaces and methods to easily add "Connect with Mee" button to your web app and get the data back from the Mee identity agent.
+Mee JS SDK provides all the needed interfaces and methods to easily add the "Connect with Mee" button to your web app and get data back from the Mee Identity Agent.
 
 ## How does it work
 
 Mee is using [SIOP](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html) to get identity information about the user.
 
-Mee JS SDK helps you to add "Connect with Mee" button to your web app easily.
+Mee JS SDK helps you to add the "Connect with Mee" button to your web app easily.
 
-Mee JS SDK generates an [OIDC Request](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedRequest), based on the data you provided to Mee JS SDK init function.
+Mee JS SDK generates an [OIDC Request](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedRequest), based on the data you provided to the Mee JS SDK init function.
 
-When user clicks "Connect with Mee", OIDC Request data is passing to the Mee identity agent and generating a user interface, requesting the data claims you asked for.
+When the user clicks "Connect with Mee", OIDC Request data is passed to the Mee Identity Agent and a user interface is generated, requesting the data claims you asked for.
 
-When user approves the data, the Mee identity agent is generating an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encoding and signing the data, and pass it back to your web app.
+When the user approves the  requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encoding and signing the data, and passes it back to your web app.
 
-After that Mee JS SDK will decode the data for you, validate it and pass it to a callback function you provided.
+After that, the Mee JS SDK will decode the data for you, validate it and pass it to a callback function you provided.
 
 ![Diagram](https://docs-dev.mee.foundation/images/mee-js-sdk.svg)
 
@@ -53,11 +53,11 @@ import Mee from 'mee-js-sdk';
 
 ## 1. If you want Mee JS SDK to automatically create "Connect with Mee" button
 
-1.1 You need to create a html block container and assign an id to it.
+1.1 You need to create an html block container and assign an id to it.
 
-1.2 Add that id to a container_id property inside configuration.
+1.2 Add the id to a container_id property inside configuration.
 
-1.3 Call the init method and provide a configuration and a callback to it.
+1.3 Call the init method and provide a configuration and callback to it.
 ```
 import { init } from 'mee-js-sdk';
 
@@ -107,7 +107,7 @@ init(configuration, callback)
 ```
 </details>
 
-## 2. If you want Mee JS SDK to automatically create "Connect with Mee" button, but the container for the button is on the separate page
+## 2. If you want Mee JS SDK to automatically create "Connect with Mee" button, but a button container is on a separate page
 
 2.1 Go over steps 1.1 - 1.3
 
@@ -120,7 +120,7 @@ init(configuration, callback)
 initButton()
 ```
 
-## 3. If you want to make you own custom "Connect with Mee" button
+## 3. If you want to make your own custom "Connect with Mee" button
 
 3.1 Go over step 1.3. Don't provide container_id argument to configuration property.
 
@@ -240,8 +240,7 @@ Each entry must contain:
   - **is_sensitive**: is this data sensitive?;
 
 ## Callback 
-  How to receive the data from the Mee Identity Agent response
-  When Mee JS SDK will receive the response, the callback you provided will be called. The callback argument will contain an object with either data or an error.
+  To receive the data from the Mee Identity Agent response: when the Mee JS SDK receives the response, the callback you provided will be called. The callback argument will contain an object with either data or an error.
 <details>
   <summary>
     Typescript
