@@ -171,51 +171,109 @@ authorize()
 
 <details>
   <summary>
-    JSON
+    JSON Schema
   </summary>
   
 ```
-  {
-      "claims": {
+ {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "client_metadata": {
+      "type": "object",
+      "properties": {
+        "client_name": {
+          "type": "string"
+        },
+        "logo_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "display_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "contacts": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "client_name",
+        "logo_uri",
+        "display_url",
+        "contacts"
+      ]
+    },
+    "redirect_uri": {
+      "type": "string"
+    },
+    "container_id": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "object",
+      "properties": {
         "id_token": {
-          "first_name": {
-              "attribute_type": "https://schema.org/name",
-              "name": "Last Name",
-              "typ": "string",
-              "essential": true,
-              "retention_duration": "while_using_app",
-              "business_purpose": "Greet the user using his name",
-              "is_sensitive": true,
-          },
-          "birthdate": {
-              "attribute_type": "https://schema.org/birthDate",
-              "name": "Date of Birth",
-              "typ": "date",
-              "essential": true,
-              "retention_duration": "ephemeral",
-              "business_purpose": "Check if user can use our services",
-              "is_sensitive": true,
-          },
-          "email": {
-              "attribute_type": "https://schema.org/email",
-              "name": "Email",
-              "typ": "email",
-              "essential": false,
-              "retention_duration": "until_connection_deletion",
-              "business_purpose": "Send updates to the user if he wants",
-              "is_sensitive": false,
+          "type": "object",
+          "patternProperties": {
+            "^.*$": {
+              "type": "object",
+              "properties": {
+                "attribute_type": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "typ": {
+                  "type": "string",
+                  "enum": ["string", "date", "email"]
+                },
+                "essential": {
+                  "type": "boolean"
+                },
+                "retention_duration": {
+                  "type": "string",
+                  "enum": ["ephemeral", "while_using_app", "until_connection_deletion"]
+                },
+                "business_purpose": {
+                  "type": "string"
+                },
+                "is_sensitive": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "attribute_type",
+                "name",
+                "typ",
+                "essential",
+                "retention_duration",
+                "business_purpose",
+                "is_sensitive"
+              ]
+            }
           }
         }
       },
-      "client_metadata": {
-          "client_name": "Mee Foundation",
-          "logo_uri": "https://mee.foundation/favicon.png,
-          "display_url": "mee.foundation,
-          "contacts": ["contact@mee.foundation"],
-      }
-      "container_id": "meeButtonContainerId",
-      "redirect_uri": "https://mee.foundation/"
-  }
+      "required": [
+        "id_token"
+      ]
+    }
+  },
+  "required": [
+    "client_metadata",
+    "redirect_uri",
+    "container_id",
+    "claims"
+  ]
+}
 ```
 </details>
 
