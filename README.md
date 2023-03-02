@@ -320,28 +320,66 @@ Data will contain claims you required and "did" claim - unique user identifier.
   
 <details>
   <summary>
-    JSON
+    JSON Schema
   </summary>
 
 response can contain either data
 ```
-  {
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
     "data": {
-      "did": "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
-      "first_name": "John",
-      "email": "john@gmail.com",
-      "birthdate": "01/01/1991"
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "string"
+        }
+      },
+      "required": ["did"]
     },
-  }
-```
-or an error 
-```
-  {
     "error": {
-      error: "user_cancelled"
-      error_description: "User cancelled";
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "enum": [
+"invalid_scope", 
+"unauthorized_client", 
+"access_denied", 
+"unsupported_response_type", 
+"server_error",
+"temporarily_unavailable",
+"interaction_required",
+"login_required",
+"account_selection_required",
+"consent_required",
+"invalid_request_uri",
+"invalid_request_object",
+"request_not_supported",
+"request_uri_not_supported",
+"registration_not_supported",
+"user_cancelled",
+"registration_value_not_supported",
+"subject_syntax_types_not_supported",
+"invalid_registration_uri",
+"invalid_registration_object",
+"validation_failed",
+"request_malformed",
+"unknown_error"
+]
+        },
+        "error_description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "error",
+        "error_description"
+      ]
     }
   }
+}
 ```
 
 </details>
