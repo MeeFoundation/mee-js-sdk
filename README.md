@@ -270,7 +270,6 @@ authorize()
   "required": [
     "client_metadata",
     "redirect_uri",
-    "container_id",
     "claims"
   ]
 }
