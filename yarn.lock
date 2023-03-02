@@ -1445,6 +1445,15 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+mee-js-sdk@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/mee-js-sdk/-/mee-js-sdk-0.1.0.tgz#40ae552f64b2dff4ec517c54c4b21c49334ea33e"
+  integrity sha512-eeMz1BNU9Qy+miV20UFMSjItL1R4PQYJofqGbauRD+FU9gkUe+PZQb/OLNjk8CSkmM5q3NW2PFPlpzGkuTcdxA==
+  dependencies:
+    big-integer "^1.6.51"
+    jose "^4.11.2"
+    multiformats "^11.0.1"
+
 merge2@^1.3.0, merge2@^1.4.1:
   version "1.4.1"
   resolved "http://localhost:4873/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
