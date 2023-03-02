@@ -6,7 +6,7 @@ The Mee Identity Agent is an app that offers privacy and convenience by giving t
 
 The Mee Identity Agent runs on the user's edge devices (a mobile phone, laptop, etc.) where it holds, entirely under the user's control, a local, private database where the user's personal information is stored. When an app/site wants to know something about the user, the agent shares as much or as little as the user prefers.
 
-You can find more at our [Docs](https://docs.mee.foundation/Identity_agent.html)
+You can find more at our [Docs](https://docs-dev.mee.foundation/Identity_agent.html)
 
 ## What is Mee JS SDK
 
