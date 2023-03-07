@@ -6,7 +6,7 @@ export enum MeeConsentDuration {
   untilConnectionDeletion = 'until_connection_deletion',
 }
 
-export type ClaimType = 'string' | 'date' | 'boolean' | 'email' | 'address' | 'card';
+export type ClaimType = 'string' | 'date' | 'email';
 
 /** Claim */
 export type ClaimData = {
@@ -47,8 +47,8 @@ export type MeeClient = {
 
 /** Information, required for Mee initialization */
 export interface MeeConfiguration {
-  claims?: MeeClaim;
-  client_metadata?: MeeClient;
+  claims: MeeClaim;
+  client_metadata: MeeClient;
   container_id?: string;
   redirect_uri: string;
 }

@@ -51,16 +51,27 @@ import Mee from 'mee-js-sdk';
 
 # How to use Mee JS SDK
 
-## 1. If you want Mee JS SDK to automatically create "Connect with Mee" button
+## 1. "Connect with Mee" Button is created automatically by Mee JS SDK and the callback handler is located on the same page as the "Connect with Mee" button
+
 
 1.1 You need to create an html block container and assign an id to it.
+```
+<div id="mee_button_container"></div>
+```
 
 1.2 Add the id to a container_id property inside configuration.
+```
+{
+    ...
+    container_id: 'mee_button_container',
+    ...
+}
+```
 
 1.3 Call the init method and provide a configuration and callback to it.
 ```
 import { init } from 'mee-js-sdk';
-
+...
 init(configuration, callback)
 ```
 <details>
@@ -77,7 +88,7 @@ init(configuration, callback)
       contacts: [],
     },
     redirect_uri: 'https://mee.foundation',
-    container_id: 'mee',
+    container_id: 'mee_button_container',
     claims: {
       id_token: {
         last_name: {
@@ -107,33 +118,65 @@ init(configuration, callback)
 ```
 </details>
 
-## 2. If you want Mee JS SDK to automatically create "Connect with Mee" button, but a button container is on a separate page
+## 2. "Connect with Mee" Button is created automatically by Mee JS SDK but the callback handler is on the different page.
 
-2.1 Go over steps 1.1 - 1.3
-
-2.2 Call initButton() method from the page with a button container.
+2.1 You need to create an html block container and assign an id to it.
 ```
-import { init, initButton } from 'mee-js-sdk';
+<div id="mee_button_container"></div>
+```
+
+2.2 Add the id to a container_id property inside configuration.
+```
+{
+    ...
+    container_id: 'mee_button_container',
+    ...
+}
+```
+
+2.3 Call the init method and provide a configuration and callback to it.
+```
+import { init } from 'mee-js-sdk';
+
+...
 
 init(configuration, callback)
+```
+
+2.4 Call initButton() method from the page with a button container.
+```
+import { initButton } from 'mee-js-sdk';
+
 ...
+
 initButton()
 ```
 
-## 3. If you want to make your own custom "Connect with Mee" button
+## 3. "Connect with Mee" Button is created manually by you (for example you want to customize it)
 
-3.1 Go over step 1.3. Don't provide container_id argument to configuration property.
+1.3 Call the init method and provide a configuration and callback to it.
+```
+import { init } from 'mee-js-sdk';
+...
+init(configuration, callback)
+```
 
 3.2 Make your own button
+```
+<button onclick="clickHandler()">Connect</button>
+```
 
 3.3 Add authorize() method to onClick event of the button.
 
 ```
-import { init, authorize } from 'mee-js-sdk';
+import { authorize } from 'mee-js-sdk';
 
-init(configuration, callback)
 ...
-authorize()
+
+function clickHandler() {
+	authorize();
+}
+
 ```
 
 ### Configuration: 
