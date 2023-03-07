@@ -319,8 +319,8 @@ function clickHandler() {
 ```
 </details>
 
--**redirect_uri**: what uri will be responsible for getting the response from the Mee identity agent. i.e  "https://oldeyorktimes.com"
-In most cases it will be the same page, where you are calling the init method.
+-**redirect_uri**: what uri will be responsible for getting the response from the Mee identity agent.
+In most cases it will be the same page, where you are calling the init method. i.e  "https://oldeyorktimes.com"
 -**container_id**: if you want init method to automatically create "Connect with Mee" button, please add block element to your web app, give it some id, and provide this id here.
 - **client_metadata**: some data about your web app.
 You must provide:
