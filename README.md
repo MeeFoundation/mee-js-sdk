@@ -14,7 +14,7 @@ Mee JS SDK provides all the needed interfaces and methods to easily add the "Con
 
 ## How does it work
 
-Mee is using [SIOP](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html) to get identity information about the user.
+Mee is using [OIDC SIOP](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html) to get identity information about the user.
 
 Mee JS SDK helps you to add the "Connect with Mee" button to your web app easily.
 
@@ -22,11 +22,11 @@ Mee JS SDK generates an [OIDC Request](https://openid.net/specs/openid-connect-c
 
 When the user clicks "Connect with Mee", OIDC Request data is passed to the Mee Identity Agent and a user interface is generated, requesting the data claims you asked for.
 
-When the user approves the  requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encoding and signing the data, and passes it back to your web app.
+When the user approves the requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encoding and signing the data, and passes it back to your web app.
 
 After that, the Mee JS SDK will decode the data for you, validate it and pass it to a callback function you provided.
 
-![Diagram](https://docs-dev.mee.foundation/images/mee-js-sdk.svg)
+![Diagram](https://docs-dev.mee.foundation/images/mee-siop-same-device-flow.svg)
 
 Please see the [Docs](https://docs-dev.mee.foundation/Connect_with_Mee.html) for more information.
 
