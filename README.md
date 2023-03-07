@@ -82,12 +82,12 @@ init(configuration, callback)
 ```
     init({
     client_metadata: {
-      client_name: 'Mee Foundation',
-      logo_uri: 'https://mee.foundation/favicon.png',
-      display_url: 'mee.foundation',
+      client_name: 'Olde York Times',
+      logo_uri: 'https://oldeyorktimes.com/favicon.png',
+      display_url: 'oldeyorktimes.com',
       contacts: [],
     },
-    redirect_uri: 'https://mee.foundation',
+    redirect_uri: 'https://oldeyorktimes.com',
     container_id: 'mee_button_container',
     claims: {
       id_token: {
@@ -319,15 +319,15 @@ function clickHandler() {
 ```
 </details>
 
--**redirect_uri**: what uri will be responsible for getting the response from the Mee identity agent.
+-**redirect_uri**: what uri will be responsible for getting the response from the Mee identity agent. i.e  "https://oldeyorktimes.com"
 In most cases it will be the same page, where you are calling the init method.
 -**container_id**: if you want init method to automatically create "Connect with Mee" button, please add block element to your web app, give it some id, and provide this id here.
 - **client_metadata**: some data about your web app.
 You must provide:
-  - **client_name**: name of your web app i.e. "Mee Foundation"
-  - **logo_uri**: url to your logo i.e. "https://mee.foundation/favicon.png"
-  - **display_url**: short url of your app i.e. "mee.foundation"
-  - **contacts**: your contacts i.e. ["contact@mee.foundation"]
+  - **client_name**: name of your web app i.e. "Olde York Times"
+  - **logo_uri**: url to your logo i.e. "https://oldeyorktimes.com/favicon.png"
+  - **display_url**: short url of your app i.e. "oldeyorktimes.com"
+  - **contacts**: your contacts i.e. ["contact@oldeyorktimes.com"]
 
 - **claims**: what data do you wang to get from the Mee identity agent.
 Each entry must contain:
