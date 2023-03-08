@@ -22,9 +22,9 @@ Mee JS SDK generates an [OIDC Request](https://openid.net/specs/openid-connect-c
 
 When the user clicks "Connect with Mee", OIDC Request data is passed to the Mee Identity Agent and a user interface is generated, requesting the data claims you asked for.
 
-When the user approves the requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encoding and signing the data, and passes it back to your web app.
+When the user approves the requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encrypting and signing the data, and passes it back to your web app.
 
-After that, the Mee JS SDK will decode the data for you, validate it and pass it to a callback function you provided.
+After that, the Mee JS SDK will decrypt the data for you, validate it and pass it to a callback function you provided.
 
 ![Diagram](https://docs-dev.mee.foundation/images/mee-siop-same-device-flow.svg)
 
