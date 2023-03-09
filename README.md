@@ -10,7 +10,7 @@ You can find more at our [Docs](https://docs-dev.mee.foundation/Identity_agent.h
 
 ## What is Mee JS SDK
 
-Mee JS SDK provides all the needed interfaces and methods to easily add the "Connect with Mee" button to your web app and get data back from the Mee Identity Agent.
+Mee JS SDK provides all the needed interfaces and methods to easily add the "Connect with Mee" button to your web app and get data back from the Mee Identity Agent app.
 
 ## How does it work
 
