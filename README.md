@@ -20,9 +20,9 @@ Mee JS SDK helps you to add the "Connect with Mee" button to your web app easily
 
 Mee JS SDK generates an [OIDC Request](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedRequest), based on the data you provided to the Mee JS SDK init function.
 
-When the user clicks "Connect with Mee", OIDC Request data is passed to the Mee Identity Agent and a user interface is generated, requesting the data claims you asked for.
+When the user clicks "Connect with Mee", OIDC Request data is passed to the Mee Identity Agent and a user interface generated, requesting the data claims you asked for.
 
-When the user approves the requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encrypting and signing the data, and passes it back to your web app.
+When the user approves the requested data to be shared, the Mee Identity Agent generates an [OIDC Response](https://openid.net/specs/openid-connect-core-1_0.html#SelfIssuedResponse), encrypts and signs the data and then passes it back to your web app.
 
 After that, the Mee JS SDK will decrypt the data for you, validate it and pass it to a callback function you provided.
 
@@ -51,7 +51,7 @@ import Mee from 'mee-js-sdk';
 
 # How to use Mee JS SDK
 
-## 1. "Connect with Mee" Button is created automatically by Mee JS SDK and the callback handler is located on the same page as the "Connect with Mee" button
+## 1. "Connect with Mee" Button created automatically by Mee JS SDK and callback handler is located on the same page as "Connect with Mee" button
 
 
 1.1 You need to create an html block container and assign an id to it.
@@ -118,7 +118,7 @@ init(configuration, callback)
 ```
 </details>
 
-## 2. "Connect with Mee" Button is created automatically by Mee JS SDK but the callback handler is on the different page.
+## 2. "Connect with Mee" Button created automatically by Mee JS SDK while callback handler located on different page
 
 2.1 You need to create an html block container and assign an id to it.
 ```
@@ -152,7 +152,7 @@ import { initButton } from 'mee-js-sdk';
 initButton()
 ```
 
-## 3. "Connect with Mee" Button is created manually by you (for example you want to customize it)
+## 3. "Connect with Mee" Button created manually by you (in case you would like to customize it)
 
 1.3 Call the init method and provide a configuration and callback to it.
 ```
@@ -429,5 +429,5 @@ response can contain either data
 ## Additional info
 This sdk has typescrypt types included.
 
-This sdk is using external dependencies: 'big-integer', 'jose' and 'multiformats' libraries.
+This sdk uses external dependencies: 'big-integer', 'jose' and 'multiformats' libraries.
 
