@@ -124,20 +124,18 @@ export const initInternal = async (
   meeInitData = {
     ...omitContainerId,
     client_id: config.redirect_uri,
-    client_metadata: typeof config.client_metadata !== 'undefined'
-      ? {
-        ...config.client_metadata,
-        application_type: 'web',
-        jwks: [{
-          ...ePub,
-          alg: 'RSA-OAEP',
-          key_ops: [
-            'encrypt',
-            'wrapKey',
-          ],
-        }],
-      }
-      : undefined,
+    client_metadata: {
+      ...config.client_metadata,
+      application_type: 'web',
+      jwks: [{
+        ...ePub,
+        alg: 'RSA-OAEP',
+        key_ops: [
+          'encrypt',
+          'wrapKey',
+        ],
+      }],
+    },
     scope: 'openid',
     response_type: 'id_token',
     nonce: await makeHash(nonce),

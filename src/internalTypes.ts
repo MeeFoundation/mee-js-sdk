@@ -19,7 +19,7 @@ export interface MeeConfigurationInternal extends Omit<MeeConfiguration, 'contai
   // env: MeeEnvType;
   scope: 'openid';
   response_type: 'code' | 'id_token' | 'code id_token';
-  client_metadata?: MeeClientInternal;
+  client_metadata: MeeClientInternal;
   client_id?: string;
   nonce: string;
 }
