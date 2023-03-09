@@ -51,7 +51,7 @@ import Mee from 'mee-js-sdk';
 
 # How to use Mee JS SDK
 
-## 1. "Connect with Mee" Button created automatically by Mee JS SDK and callback handler is located on the same page as "Connect with Mee" button
+## 1. "Connect with Mee" Button created automatically by Mee JS SDK and callback handler located on the same page as "Connect with Mee" button
 
 
 1.1 You need to create an html block container and assign an id to it.
