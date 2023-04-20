@@ -64,3 +64,7 @@ export enum DidType {
   web,
   key,
 }
+
+export type MeeResponsePositiveInternal = {
+  [name: string]: string
+};

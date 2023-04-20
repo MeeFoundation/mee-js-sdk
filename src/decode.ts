@@ -6,20 +6,28 @@ import {
 } from 'jose';
 import {
   clearSavedData,
-  getMeeDataFromLocalStorage, isMeeError, makeHash,
+  getMeeDataFromLocalStorage, isJson, isMeeError, makeHash,
 } from './helpers';
+import { MeeResponsePositiveInternal } from './internalTypes';
 import { getKeyFromDidKey } from './resolvers/key';
 import { getKeyFromDidWeb } from './resolvers/web';
 import {
   MeeError, MeeResponse, MeeResponsePositive,
 } from './types';
 
-function removeServiceData(data: JWTPayload): MeeResponsePositive {
+function removeServiceDataAndParse(data: JWTPayload): MeeResponsePositive {
   const {
     aud, exp, iat, jti, nbf, sub, nonce, ...rest
   } = data;
-
-  return rest as unknown as MeeResponsePositive;
+  const claims = rest as unknown as MeeResponsePositiveInternal;
+  const claimsParsed: MeeResponsePositive = { ...claims };
+  Object.keys(claims).forEach((key) => {
+    const value = isJson(claims[key]);
+    if (typeof (value) !== 'undefined') {
+      claimsParsed[key] = value;
+    }
+  });
+  return claimsParsed;
 }
 
 const getKeyFromDid = async (payload: JWTPayload): Promise<JWK | null> => {
@@ -59,7 +67,7 @@ export async function validateResponse(jwtEncrypted: string, clientId?: string):
      || savedMeeLSDataParsed?.nonce === null) return { error: new MeeError('No nonce found') };
     const hashLocalNonce = await makeHash(savedMeeLSDataParsed.nonce);
     if (hashLocalNonce !== payload.nonce) return { error: new MeeError('Nonce is not valid') };
-    return { data: removeServiceData(payload) };
+    return { data: removeServiceDataAndParse(payload) };
   } catch (e) {
     return { error: new MeeError(e as string) };
   }

@@ -104,3 +104,11 @@ export const setLocalStorageExpireCheck = () => {
     checkExpiration();
   }, interval);
 };
+
+export const isJson = (str: string): unknown | undefined => {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return undefined;
+  }
+};

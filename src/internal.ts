@@ -13,7 +13,7 @@ import {
 } from './helpers';
 import { MeeConfigurationInternal } from './internalTypes';
 import {
-  MeeConfiguration, MeeError, MeeErrorTypes, MeeResponse,
+  MeeConfiguration, MeeError, MeeErrorTypes, MeeResponse, MeeResponseCard,
 } from './types';
 
 const MEE_URL = 'https://auth.mee.foundation/#/';
@@ -106,6 +106,15 @@ export const initButtonInternal = () => {
   if (savedContainerId !== null) createButton(savedContainerId);
 };
 
+const removeQueryParameter = () => {
+  window.history.replaceState(
+    {},
+    document.title,
+    removeURLParameter(window.location.href, 'mee_auth_token'),
+
+  );
+};
+
 /** @internal */
 export const initInternal = async (
   config: MeeConfiguration,
@@ -159,15 +168,22 @@ export const initInternal = async (
         errorDescription,
         isErrorCodeValid ? errorCode as MeeErrorTypes : MeeErrorTypes.unknown_error,
       );
+      removeQueryParameter();
       callback({ error, data: undefined });
     } else {
+      removeQueryParameter();
       validateResponse(token, meeInitData.client_id).then((data) => callback(data));
-      window.history.replaceState(
-        {},
-        document.title,
-        removeURLParameter(window.location.href, 'mee_auth_token'),
-
-      );
     }
   }
+};
+
+export const isMeeResponseCardInternal = (value: unknown | undefined): value is MeeResponseCard => {
+  if (typeof value !== 'undefined'
+    && typeof (value as MeeResponseCard).number !== 'undefined'
+    && typeof (value as MeeResponseCard).expirationDate !== 'undefined'
+    && typeof (value as MeeResponseCard).cvc !== 'undefined') {
+    return true;
+  }
+
+  return false;
 };

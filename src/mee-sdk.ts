@@ -1,9 +1,11 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 
-import { goToMee, initButtonInternal, initInternal } from './internal';
 import {
-  MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse, MeeResponsePositive,
+  goToMee, initButtonInternal, initInternal, isMeeResponseCardInternal,
+} from './internal';
+import {
+  MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse, MeeResponseCard, MeeResponsePositive,
 } from './types';
 
 export const authorize = () => {
@@ -25,6 +27,8 @@ export const init = (config: MeeConfiguration, callback: (data: MeeResponse) => 
 export const initButton = () => {
   initButtonInternal();
 };
+
+export const isMeeResponseCard = (value: unknown | undefined): value is MeeResponseCard => isMeeResponseCardInternal(value);
 
 const test = async () => {
   init({

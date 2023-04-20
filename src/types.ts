@@ -6,7 +6,7 @@ export enum MeeConsentDuration {
   untilConnectionDeletion = 'until_connection_deletion',
 }
 
-export type ClaimType = 'string' | 'date' | 'email';
+export type ClaimType = 'string' | 'date' | 'email' | 'card';
 
 /** Claim */
 export type ClaimData = {
@@ -26,9 +26,16 @@ export type MeeClaim = {
   }
 };
 
+/** Card */
+export type MeeResponseCard = {
+  number: string,
+  expirationDate: string,
+  cvc: string
+};
+
 /** Response, containing claims */
 export type MeeResponsePositive = {
-  [name: string]: string
+  [name: string]: string | unknown
 };
 
 /** Contains either data or error. */
