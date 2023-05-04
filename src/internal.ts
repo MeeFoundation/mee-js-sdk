@@ -16,8 +16,8 @@ import {
   MeeConfiguration, MeeError, MeeErrorTypes, MeeResponse, MeeResponseCard,
 } from './types';
 
-const MEE_URL = 'https://auth.mee.foundation/#/';
-const CONSENT = 'consent';
+const MEE_URL = 'https://auth.mee.foundation/';
+const AUTHORIZE = 'authorize';
 
 let meeInitData: MeeConfigurationInternal | null = null;
 let meeEncodedData: string | null = null;
@@ -47,7 +47,7 @@ export const goToMee = () => {
   } finally {
     if (meeInitData !== null && meeEncodedData !== null) {
       window.open(meeInitData.client_id
-        ? `${MEE_URL}${CONSENT}/${meeEncodedData}`
+        ? `${MEE_URL}${AUTHORIZE}?scope=openid&request=${meeEncodedData}`
         : `${MEE_URL}app`, '_blank');
     }
   }
@@ -110,7 +110,7 @@ const removeQueryParameter = () => {
   window.history.replaceState(
     {},
     document.title,
-    removeURLParameter(window.location.href, 'mee_auth_token'),
+    removeURLParameter(window.location.href, 'id_token'),
 
   );
 };
@@ -135,6 +135,7 @@ export const initInternal = async (
     client_id: config.redirect_uri,
     client_metadata: {
       ...config.client_metadata,
+      subject_syntax_types_supported: ['did:key'],
       application_type: 'web',
       jwks: [{
         ...ePub,
@@ -155,7 +156,7 @@ export const initInternal = async (
   const ePriv = await keyToPem(keys.encrypt.privateKey);
   privateKeys = { encrypt: ePriv, sign: sPriv };
 
-  const token = getQueryParameters('mee_auth_token');
+  const token = getQueryParameters('id_token');
   if (typeof token !== 'undefined') {
     if (token.startsWith('error:')) {
       const errorParts = token.split(',error_description:');

@@ -105,7 +105,7 @@ init(configuration, callback)
           name: 'First Name',
           typ: 'string',
           essential: false,
-          retention_duration: MeeConsentDuration.ephemeral,
+          retention_duration: MeeConsentDuration.whileUsingApp,
           business_purpose: '',
           is_sensitive: true,
         },
@@ -194,7 +194,7 @@ function clickHandler() {
               name: string;
               typ: 'string' | 'date' | 'email' | 'address';
               essential: boolean;
-              retention_duration: "ephemeral" | "while_using_app" | "until_connection_deletion"
+              retention_duration: "while_using_app" | "until_connection_deletion"
               business_purpose: string;
               is_sensitive: boolean;
           }
@@ -283,7 +283,7 @@ function clickHandler() {
                 },
                 "retention_duration": {
                   "type": "string",
-                  "enum": ["ephemeral", "while_using_app", "until_connection_deletion"]
+                  "enum": ["while_using_app", "until_connection_deletion"]
                 },
                 "business_purpose": {
                   "type": "string"
@@ -335,7 +335,7 @@ Each entry must contain:
   - **name**: attribute name i.e. "First Name"
   - **typ**: claim type. Can be 'string' or 'date' or 'email' or 'address'
   - **essential**: is this claim required?
-  - **retention_duration**: how long would you like this data to be stored. Can be 'ephemeral' or 'while_using_app' or 'until_connection_deletion'
+  - **retention_duration**: how long would you like this data to be stored. Can be 'while_using_app' or 'until_connection_deletion'
   - **business_purpose**: why do you need this data?
   - **is_sensitive**: is this data sensitive?;
 

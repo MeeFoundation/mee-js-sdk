@@ -12,6 +12,7 @@ export enum MeeEnvType {
 export interface MeeClientInternal extends MeeClient {
   application_type: 'web' | 'mobile',
   jwks: JsonWebKey[],
+  subject_syntax_types_supported: string[]
 
 }
 /** @internal */

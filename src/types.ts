@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
 export enum MeeConsentDuration {
-  ephemeral = 'ephemeral',
   whileUsingApp = 'while_using_app',
   untilConnectionDeletion = 'until_connection_deletion',
 }

@@ -56,7 +56,7 @@ const test = async () => {
           name: 'First Name',
           typ: 'string',
           essential: false,
-          retention_duration: MeeConsentDuration.ephemeral,
+          retention_duration: MeeConsentDuration.whileUsingApp,
           business_purpose: '',
           is_sensitive: true,
         },
