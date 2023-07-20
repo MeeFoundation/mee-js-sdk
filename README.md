@@ -26,7 +26,7 @@ When the user approves the requested data to be shared, the Mee Identity Agent g
 
 After that, the Mee JS SDK will decrypt the data for you, validate it and pass it to a callback function you provided.
 
-![Diagram](https://docs-dev.mee.foundation/images/mee-siop-same-device-flow.svg)
+![Diagram](https://docs-dev.mee.foundation/_astro/mee-siop-same-device-flow.40e1ceea.svg)
 
 Please see the [Docs](https://docs-dev.mee.foundation/Connect_with_Mee.html) for more information.
 
