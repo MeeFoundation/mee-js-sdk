@@ -13,7 +13,7 @@ export type ClaimData = {
   name: string,
   typ: ClaimType,
   essential: boolean,
-  retention_duration: MeeConsentDuration,
+  retention_duration?: MeeConsentDuration,
   business_purpose: string,
   is_sensitive: boolean,
 };

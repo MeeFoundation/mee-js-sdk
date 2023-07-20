@@ -1,5 +1,8 @@
 import { JWK } from 'jose';
-import { MeeClient, MeeConfiguration } from './types';
+import {
+  ClaimData,
+  MeeClient, MeeConfiguration, MeeConsentDuration,
+} from './types';
 
 /** @internal */
 export enum MeeEnvType {
@@ -23,6 +26,7 @@ export interface MeeConfigurationInternal extends Omit<MeeConfiguration, 'contai
   client_metadata: MeeClientInternal;
   client_id?: string;
   nonce: string;
+  claims: MeeClaimInternal;
 }
 
 /** @internal */
@@ -33,6 +37,18 @@ export enum InternalErrorType {
   invalid_registration_uri = 'invalid_registration_uri',
   invalid_registration_object = 'invalid_registration_object',
 }
+
+/** @internal */
+export type ClaimDataInternal = ClaimData & {
+  retention_duration: MeeConsentDuration,
+};
+
+/** @internal */
+export type MeeClaimInternal = {
+  id_token?: {
+    [name: string]: ClaimDataInternal
+  }
+};
 
 /** @internal */
 export type MeeResponseInternalError = {

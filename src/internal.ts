@@ -11,9 +11,9 @@ import {
 import {
   makeHash, makeRandomString, meeLSDataToString, removeURLParameter, setLocalStorageExpireCheck,
 } from './helpers';
-import { MeeConfigurationInternal } from './internalTypes';
+import { ClaimDataInternal, MeeConfigurationInternal } from './internalTypes';
 import {
-  MeeConfiguration, MeeError, MeeErrorTypes, MeeResponse, MeeResponseCard,
+  MeeConfiguration, MeeConsentDuration, MeeError, MeeErrorTypes, MeeResponse, MeeResponseCard,
 } from './types';
 
 const MEE_URL = 'https://auth.mee.foundation/';
@@ -130,6 +130,17 @@ export const initInternal = async (
   const ePub = await keyToJwk(keys.encrypt.publicKey);
   const { container_id: containerId, ...omitContainerId } = config;
   savedContainerId = containerId ?? null;
+  const internalClaimsIdToken = typeof config.claims.id_token !== 'undefined'
+    ? Object.entries(config.claims.id_token).reduce((acc, rec) => {
+      const [key, value] = rec;
+      const internalClaimEntry = {
+        ...value,
+        retention_duration: value.retention_duration || MeeConsentDuration.whileUsingApp,
+      };
+      acc[key] = { ...internalClaimEntry };
+      return acc;
+    }, {} as { [name: string]: ClaimDataInternal })
+    : undefined;
   meeInitData = {
     ...omitContainerId,
     client_id: config.redirect_uri,
@@ -149,6 +160,7 @@ export const initInternal = async (
     scope: 'openid',
     response_type: 'id_token',
     nonce: await makeHash(nonce),
+    claims: { id_token: internalClaimsIdToken },
   };
   const pJWK = await exportJWK(keys.sign.publicKey);
   meeEncodedData = await encodeRequest(meeInitData, meeInitData, keys.sign.privateKey, pJWK);
