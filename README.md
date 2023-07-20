@@ -96,7 +96,7 @@ init(configuration, callback)
           name: 'Last Name',
           typ: 'string',
           essential: true,
-          retention_duration: "",
+          retention_duration: MeeConsentDuration.whileUsingApp,
           business_purpose: '',
           is_sensitive: true,
         },
@@ -194,7 +194,7 @@ function clickHandler() {
               name: string;
               typ: 'string' | 'date' | 'email' | 'address';
               essential: boolean;
-              retention_duration: "while_using_app" | "until_connection_deletion"
+              retention_duration?: "while_using_app" | "until_connection_deletion"
               business_purpose: string;
               is_sensitive: boolean;
           }
@@ -297,7 +297,6 @@ function clickHandler() {
                 "name",
                 "typ",
                 "essential",
-                "retention_duration",
                 "business_purpose",
                 "is_sensitive"
               ]
