@@ -50,6 +50,7 @@ const test = async () => {
           retention_duration: MeeConsentDuration.whileUsingApp,
           business_purpose: '',
           is_sensitive: true,
+          order: 1,
         },
         first_name: {
           attribute_type: 'https://schema.org/name',
@@ -59,6 +60,7 @@ const test = async () => {
           retention_duration: MeeConsentDuration.whileUsingApp,
           business_purpose: '',
           is_sensitive: true,
+          order: 2,
         },
       },
     },

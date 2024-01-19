@@ -1,6 +1,6 @@
 {
   "name": "mee-js-sdk",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "main": "mee-js-sdk.js",
   "module": "./dist/mee-js-sdk.es.js",
   "browser": "./dist/mee-js-sdk.umd.js",

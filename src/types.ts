@@ -16,6 +16,7 @@ export type ClaimData = {
   retention_duration?: MeeConsentDuration,
   business_purpose: string,
   is_sensitive: boolean,
+  order?: number,
 };
 
 /** Claims request */
