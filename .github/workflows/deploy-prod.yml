@@ -3,6 +3,11 @@ name: Deploy on Prod
 on:
   workflow_dispatch:
 
+env:
+  PROJECT_ID: the-mee-foundation
+  HOST: sdk.mee.foundation
+  BUCKET_NAME: sdk-mee-foundation-bucket
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,15 +25,13 @@ jobs:
         run: yarn build
 
       - name: configure gcp credentials
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: "projects/1043231896197/locations/global/workloadIdentityPools/github-actions-pool/providers/github"
-          service_account: "github-actions@the-mee-foundation.iam.gserviceaccount.com"
+          service_account: "github-actions@$PROJECT_ID.iam.gserviceaccount.com"
 
       - name: deploy to bucket
-        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          gcloud storage rsync --recursive ./dist gs://sdk-mee-foundation-bucket
-          gcloud storage objects update --content-type="text/html" --cache-control="public, max-age=60" --content-disposition="" gs://sdk-mee-foundation-bucket/*.html
-          gcloud compute url-maps invalidate-cdn-cache prod-url-map --project the-mee-foundation --path "/index.html" --host "sdk.mee.foundation" --async 
+          gcloud storage rsync --recursive ./dist gs://$BUCKET_NAME
+          gcloud storage objects update --content-type="text/html" --cache-control="public, max-age=60" --content-disposition="" gs://$BUCKET_NAME/*.{js,ts}
+          gcloud compute url-maps invalidate-cdn-cache prod-url-map --project $PROJECT_ID --path "/index.html" --host "$HOST" --async 
